@@ -29,50 +29,42 @@ app.get('/', (req, res) => {
 });
 
 app.get('/charts/', (req, res) => {
-  res.writeHead(200, {'Content-Type': 'application/json'});
-  res.end(JSON.stringify([
-      {
-        regionName: 'Albuquerque',
-        regionId: 'ALB',
-        publicationDate: new Date('2016-01-29'),
-        expirationDate: new Date('2016-12-05'),
-        revisionNumber: 0,
-      },
-      {
-        regionName: 'Seattle',
-        regionId: 'SEA',
-        publicationDate: new Date('2016-01-29'),
-        expirationDate: new Date('2016-12-05'),
-        revisionNumber: 0,
-      }
-    ]));
+  res.status(200).send([
+		{
+			regionName: 'Albuquerque',
+			regionId: 'ALB',
+			publicationDate: new Date('2016-01-29'),
+			expirationDate: new Date('2016-12-05'),
+			revisionNumber: 0,
+		},
+		{
+			regionName: 'Seattle',
+			regionId: 'SEA',
+			publicationDate: new Date('2016-01-29'),
+			expirationDate: new Date('2016-12-05'),
+			revisionNumber: 0,
+		}
+	]);
 });
 
 app.get('/charts/:regionId', (req, res) => {
   let regionId = req.params.regionId.toLowerCase();
   console.log('Received request for region id: ' + regionId);
 
-  let vfrChartModel;
-  if (regionId === 'sea') {
-    vfrChartModel = JSON.stringify({
+  res.status(200).send(regionId === 'sea'
+		? {
       regionName: 'Seattle',
       regionId: 'SEA',
       publicationDate: new Date('2016-01-29'),
       expirationDate: new Date('2016-12-05'),
       revisionNumber: 0,
-    });
-  } else {
-    vfrChartModel = JSON.stringify({
+    } : {
       regionName: 'Albuquerque',
       regionId: 'ALB',
       publicationDate: new Date('2016-01-29'),
       expirationDate: new Date('2016-12-05'),
       revisionNumber: 0,
     });
-  }
-
-  res.writeHead(200, {'Content-Type': 'application/json'});
-  res.end(vfrChartModel);
 });
 
 app.get('/charts/:regionId/zip', (req, res) => {
